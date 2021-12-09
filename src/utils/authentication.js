@@ -12,9 +12,9 @@ const authentication = async ({ req }) => {
         try {
             let requestOptions = {
                 method: 'POST',
-                headers: { "Content-type": "application/json" },
-                body: JSON.stringify({ token }),
-                redirect: 'follow'
+                headers  : { "Content-Type": "application/json" },
+                body     : JSON.stringify({ token }),
+                redirect : 'follow'
             };
 
             let response = await fetch(
