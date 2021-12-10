@@ -1,56 +1,56 @@
 const userResolver = {
-    Query:{
-        userDetailById: async (_, {userId}, {dataSources, userIdToken}) => {
-            if(userId == userIdToken){
-                return await dataSources.AuthAPI.getUser(userId);
-            }
-            else {
+    Query: {
+        userDetailById: async (_, { userId }, { dataSources, userIdToken }) => {
+            if (userId == userIdToken)
+                return await dataSources.authAPI.getUser(userId);
+            else
                 return null;
-            }
+        },
+        userOtherAccounts: async (_, { userId }, { dataSources, userIdToken }) => {
+            if (userId == userIdToken)
+                return await dataSources.authAPI.getOtherAccounts(userId);
+            else
+                return null;
         }
     },
     Mutation: {
-        signUpUser: async (_, {userInput}, {dataSources}) => {
+        signUpUser: async (_, { userInput }, { dataSources }) => {
             const accountInput = {
-                username   : userInput.username,
-                balance    : userInput.balance,
-                lastChange : (new Date()).toISOString()
+                username: userInput.username,
+                balance: userInput.balance,
+                lastChange: (new Date()).toISOString()
             }
-            await dataSources.accountAPI.createAccount(accountInput);
 
-            // TO DO change order to add a better logic
-            const authInput ={
-                username : userInput.username,
-                password : userInput.password,
-                name     : userInput.name,
-                email    : userInput.email
+            const authInput = {
+                username: userInput.username,
+                password: userInput.password,
+                name: userInput.name,
+                email: userInput.email
             }
-            await dataSources.authAPI.createUser(authInput);
+            const userResponse = await dataSources.authAPI.createUser(authInput);
+            if (userResponse.hasOwnProperty('refresh') && userResponse.hasOwnProperty('access'))
+                await dataSources.accountAPI.createAccount(accountInput);
+            return userResponse;
         },
-        logIn: async (_, {credentials}, {dataSources}) => {
+        logIn: async (_, { credentials }, { dataSources }) => {
             return await dataSources.authAPI.authRequest(credentials);
         },
-        refreshToken: (_, {token}, {dataSources}) => {
-            dataSources.authAPI.refreshToken(token);
+        refreshToken: async (_, { token }, { dataSources }) => {
+            return await dataSources.authAPI.refreshToken(token);
         },
-        updateUser: async (_, {user}, {dataSources, userIdToken} ) => {
-            if(user.id == userIdToken){
+        updateUser: async (_, { user }, { dataSources, userIdToken }) => {
+            if (user.id == userIdToken)
                 return await dataSources.authAPI.updateUser(user);
-            }
-            else{
+            else
                 return null;
-            }
         },
-        deleteUser: async (_, {userId}, {dataSources, userIdToken} ) => {
-            if(userId == userIdToken){
+        deleteUser: async (_, { userId }, { dataSources, userIdToken }) => {
+            if (userId == userIdToken)
                 return await dataSources.authAPI.deleteUser(userId);
-            }
-            else{
+            else
                 return null;
-            }
         }
     }
-
 };
 
 module.exports = userResolver;

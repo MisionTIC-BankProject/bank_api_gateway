@@ -1,15 +1,13 @@
-const {gql} = require('apollo-server');
+const { gql } = require('apollo-server')
 
-const accountTypes = gql `
+const accountTypes = gql`
     type Account {
-        username   :String!
-        balance    :Int!
-        lastChange :String!
+        username:String!
+        balance:Int!
+        lastChange:String!
     }
-    
-    extend type Query {
-        accountByUsername(username:String!) :Account
+    extend type Query{
+        accountByUsername(username:String!):Account
     }
 `;
-
 module.exports = accountTypes;

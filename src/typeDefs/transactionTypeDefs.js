@@ -1,37 +1,33 @@
-const {gql} = require('apollo-server');
+const { gql } = require('apollo-server');
 
-const transactionTypes = gql `
+const transactionTypes = gql`
     type Transaction {
-        id              :String!
-        usernameOrigin  :String!
-        usernameDestiny :String!
-        value           :Int!
-        note            :String!
-        date            :String!
+        id             :String!
+        usernameOrigin :String!
+        usernameDestiny:String!
+        value          :Int!
+        note           :String!
+        date           :String!
     }
-
-    type TransactionInput {
-        usernameOrigin  :String!
-        usernameDestiny :String!
-        value           :Int!
-        note            :String!
+    input TransactionInput {
+        usernameOrigin :String!
+        usernameDestiny:String!
+        value          :Int!
+        note           :String!
     }
-
-    type TransactionUpdate {
-        id   :String!
-        note :String!
+    input TransactionUpdate {
+        id  :String!
+        note:String!
     }
-
     extend type Query{
-        transactionByUsername(username:String!) :[Transaction];
-        transactionById(transactionId:String!) :[Transaction];
+        transactionByUsername(username:String!)  :[Transaction]
+        transactionById(transationId:String!)    :Transaction
+        transactionUsersDestiny(username:String!):[String]
     }
-
     extend type Mutation{
-        createTransaction(transaction: TransactionInput!) :Transaction
-        updateTransaction(transaction: TransactionUpdate) :Transaction
-        deleteTransaction(username: String!) :String!
+        createTransaction(transaction:TransactionInput!) :Transaction
+        updateTransaction(transaction:TransactionUpdate!):Transaction
+        deleteTransaction(transactionId:String!)          :String!
     }
 `;
-
 module.exports = transactionTypes;
