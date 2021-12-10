@@ -23,7 +23,8 @@ const transactionTypes = gql `
     }
 
     extend type Query{
-        transactionByUsername(username:String!) :[Transaction]
+        transactionByUsername(username:String!) :[Transaction];
+        transactionById(transactionId:String!) :[Transaction];
     }
 
     extend type Mutation{

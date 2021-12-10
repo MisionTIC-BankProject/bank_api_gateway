@@ -26,6 +26,10 @@ class AccountAPI extends RESTDataSource{
         return await this.get(`/transactions/${username}`);
     }
 
+    async transactionById(transactionId){
+        return await this.get(`/transactions/get/${transactionId}`);
+    }
+
     async updateTransaction(transaction){
         transaction = new Object(JSON.parse(JSON.stringify(transaction)));
         return await this.put('/transactions/update', transaction);
