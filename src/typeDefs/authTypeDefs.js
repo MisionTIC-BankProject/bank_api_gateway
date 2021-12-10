@@ -31,10 +31,18 @@ const authTypes = gql `
         email    :String!
     }
 
+    type UserUpdate {
+        id       :Int!
+        password :String!
+        name     :String!
+    }
+
     type Mutation {
-        signUpUser(userInput : $SignUpInput)    : Tokens!
+        signUpUser(userInput : $SignUpInput)       : Tokens!
         logIn(credentials    : $CredentialsInput!) : Tokens!
-        refreshToken(token : String!)        : Access!
+        refreshToken(token : String!)              : Access!
+        updateUser(user: UserUpdate!)              :UserDetail!
+        deleteUser(userId: String!)                : String!
     }
 
     type Query {
